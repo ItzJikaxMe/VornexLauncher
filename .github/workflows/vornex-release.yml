@@ -1,4 +1,4 @@
-name: Vornex Android Rollback Release
+name: Vornex Android Release
 
 on:
   push:
@@ -38,11 +38,12 @@ jobs:
       - name: Prepare APK download
         run: cp app_mojo/build/outputs/apk/full/debug/app_mojo-full-debug.apk VornexLauncher.apk
 
-      - name: Publish rollback release
+      - name: Publish current commit release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: vornex-rollback-${{ github.run_number }}
-          name: Vornex Launcher restored build ${{ github.run_number }}
+          tag_name: vornex-build-${{ github.run_id }}
+          name: Vornex Launcher build ${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
           make_latest: true
           prerelease: false
           generate_release_notes: true
