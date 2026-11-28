@@ -54,7 +54,7 @@
             android:exported="true"
             android:label="Vornex Launcher"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,7 +64,7 @@
         <activity
             android:name=".LauncherActivity"
             android:label="Vornex Launcher"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ImportControlActivity"
