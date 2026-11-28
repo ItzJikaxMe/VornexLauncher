@@ -33,7 +33,7 @@
         android:hasFragileUserData="true"
         android:icon="@mipmap/ic_launcher"
         android:isGame="true"
-        android:label="Immortal Launcher"
+        android:label="Vornex Launcher"
         android:process=":launcher"
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -52,9 +52,9 @@
         <activity
             android:name=".TestStorageActivity"
             android:exported="true"
-            android:label="Immortal Launcher"
+            android:label="Vornex Launcher"
             android:launchMode="singleTop"
-            android:screenOrientation="sensorLandscape">
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,8 +63,8 @@
         </activity>
         <activity
             android:name=".LauncherActivity"
-            android:label="Immortal Launcher"
-            android:screenOrientation="sensorLandscape"
+            android:label="Vornex Launcher"
+            android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ImportControlActivity"

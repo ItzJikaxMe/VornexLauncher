@@ -103,18 +103,18 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if(convertView == null)
-            convertView = mLayoutInflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
-
+        if (convertView == null) {
+            convertView = mLayoutInflater.inflate(R.layout.item_version_group, parent, false);
+        }
         ((TextView) convertView).setText(mGroups[groupPosition]);
-
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if(convertView == null)
-            convertView = mLayoutInflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
+        if (convertView == null) {
+            convertView = mLayoutInflater.inflate(R.layout.item_version_child, parent, false);
+        }
         ((TextView) convertView).setText(getChild(groupPosition, childPosition));
         return convertView;
     }

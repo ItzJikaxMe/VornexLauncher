@@ -2,39 +2,40 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
+    android:background="@drawable/auth_choice_panel"
+    android:padding="12dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/mod_extended_error_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/search_modpack_download_error"
-        android:textColor="#FFFF0000"
+        android:textColor="#FFFF7777"
+        android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/mod_extended_version_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/_30sdp"
-        android:layout_marginVertical="@dimen/padding_moderate"
-        app:layout_constraintTop_toBottomOf="@+id/mod_extended_error_textview"
-        />
+        android:layout_height="48dp"
+        android:background="@drawable/auth_choice_offline"
+        android:paddingHorizontal="10dp"
+        android:minHeight="48dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/mod_extended_error_textview" />
 
     <com.kdt.mcgui.MineButton
         android:id="@+id/mod_extended_select_version_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:enabled="false"
         android:text="@string/generic_install"
-        android:layout_marginHorizontal="@dimen/padding_large"
-        android:layout_marginTop="@dimen/padding_moderate"
-        android:layout_marginBottom="@dimen/padding_large"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mod_extended_version_spinner" />
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/mod_extended_version_spinner"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

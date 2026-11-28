@@ -33,7 +33,6 @@ import git.artdeell.mojo.R;
 import git.artdeell.mojo.MojoApplication;
 import git.artdeell.mojo.Tools;
 import git.artdeell.mojo.modding.modpacks.ModItemAdapter;
-import git.artdeell.mojo.modding.modpacks.api.CommonApi;
 import git.artdeell.mojo.modding.modpacks.api.ModpackApi;
 import git.artdeell.mojo.modding.modpacks.api.ModrinthApi;
 import git.artdeell.mojo.modding.modpacks.models.SearchFilters;
@@ -137,7 +136,7 @@ public class SearchModFragment extends Fragment implements ModItemAdapter.Search
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if ("modpack".equals(projectType)) {
-            modpackApi = new CommonApi(context.getString(R.string.curseforge_api_key));
+            modpackApi = new ModrinthApi();
         } else {
             Bundle args = getArguments();
             String instanceId = args == null ? null : args.getString(ARG_INSTANCE_ID);

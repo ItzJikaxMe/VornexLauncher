@@ -2,8 +2,8 @@
 <resources>
     <color name="control_button_color">#35FFFFFF</color>
     <color name="control_button_pressed_color">#55000000</color>
-    <color name="minebutton_color">#43D12B</color>
-    <color name="minebutton_secondary">#172719</color>
+    <color name="minebutton_color">#18C9E8</color>
+    <color name="minebutton_secondary">#102A32</color>
     <color name="background_app">#101112</color>
     <color name="divider">#35383A</color>
     <color name="background_overlay">#1A1B1D</color>
@@ -13,20 +13,21 @@
     <color name="primary_text">#F4F4F4</color>
     <color name="secondary_text">#A5A5A5</color>
     <color name="accent_soft">#79ED64</color>
-    <color name="gold_primary">#43D12B</color>
-    <color name="gold_soft">#7CEF68</color>
-    <color name="gold_muted">#67985D</color>
-    <color name="gold_divider">#5536B82A</color>
+    <color name="gold_primary">#18C9E8</color>
+    <color name="gold_soft">#72E9FA</color>
+    <color name="gold_muted">#438D9B</color>
+    <color name="gold_divider">#5532D5E8</color>
     <color name="nav_item_background">#1C1D1F</color>
-    <color name="nav_item_selected_start">#1B351C</color>
-    <color name="nav_item_selected_end">#142518</color>
+    <color name="nav_item_selected_start">#12333B</color>
+    <color name="nav_item_selected_end">#10262D</color>
     <color name="launcher_background">#101112</color>
     <color name="launcher_panel">#1C1D1F</color>
     <color name="launcher_panel_border">#36393C</color>
-    <color name="launcher_green">#43D12B</color>
-    <color name="launcher_green_bright">#7CEF68</color>
-    <color name="launcher_green_dark">#172719</color>
+    <color name="launcher_green">#18C9E8</color>
+    <color name="launcher_green_bright">#72E9FA</color>
+    <color name="launcher_green_dark">#102A32</color>
     <color name="launcher_text">#F4F4F4</color>
     <color name="launcher_muted">#A5A5A5</color>
-    <color name="launcher_icon_tile">#26282A</color>
+    <color name="launcher_icon_tile">#202B30</color>
+    <color name="launcher_blue">#55DDF2</color>
 </resources>

@@ -64,7 +64,7 @@ public class LauncherActivity extends BaseActivity {
         public void onFragmentResumed(@NonNull FragmentManager fm, @NonNull Fragment f) {
             Fragment rootFragment = getSupportFragmentManager()
                     .findFragmentById(mFragmentView.getId());
-            mSettingsButton.setImageDrawable(ContextCompat.getDrawable(getBaseContext(),
+            if (mSettingsButton != null) mSettingsButton.setImageDrawable(ContextCompat.getDrawable(getBaseContext(),
                     rootFragment instanceof MainMenuFragment
                             ? R.drawable.ic_px_sliders : R.drawable.ic_px_home));
         }
@@ -189,7 +189,7 @@ public class LauncherActivity extends BaseActivity {
         ProgressKeeper.addTaskCountListener(mDoubleLaunchPreventionListener);
         ProgressKeeper.addTaskCountListener((mProgressServiceKeeper = new ProgressServiceKeeper(this)));
 
-        mSettingsButton.setOnClickListener(mSettingButtonListener);
+        if (mSettingsButton != null) mSettingsButton.setOnClickListener(mSettingButtonListener);
         ProgressKeeper.addTaskCountListener(mProgressLayout);
         ExtraCore.addExtraListener(ExtraConstants.BACK_PREFERENCE, mBackPreferenceListener);
         ExtraCore.addExtraListener(ExtraConstants.SELECT_AUTH_METHOD, mSelectAuthMethod);
@@ -250,6 +250,8 @@ public class LauncherActivity extends BaseActivity {
             }
         }
 
+        Fragment root = getSupportFragmentManager().findFragmentById(mFragmentView.getId());
+        if (root instanceof MainMenuFragment && ((MainMenuFragment) root).handleBackPress()) return;
         super.onBackPressed();
     }
 

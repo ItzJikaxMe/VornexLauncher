@@ -91,6 +91,17 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="46dp" android:layout_marginTop="8dp" android:orientation="horizontal">
+        <Button android:id="@+id/skin_library_button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/bg_skin_action" android:text="Skin Library" android:textAllCaps="false" android:textColor="@color/primary_text" android:textSize="12sp" />
+        <Button android:id="@+id/cape_library_button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="8dp" android:background="@drawable/bg_skin_action" android:text="Cape Library" android:textAllCaps="false" android:textColor="@color/primary_text" android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="42dp" android:layout_marginTop="7dp" android:orientation="horizontal">
+        <Button android:id="@+id/skin_auto_rotate" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/bg_skin_status" android:text="Auto rotate: ON" android:textAllCaps="false" android:textColor="@color/primary_text" android:textSize="11sp" />
+        <Button android:id="@+id/skin_walk_animation" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="8dp" android:background="@drawable/bg_skin_status" android:text="Walk: ON" android:textAllCaps="false" android:textColor="@color/primary_text" android:textSize="11sp" />
+        <Button android:id="@+id/skin_reset_view" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.7" android:layout_marginStart="8dp" android:background="@drawable/bg_skin_status" android:text="Reset" android:textAllCaps="false" android:textColor="@color/primary_text" android:textSize="11sp" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/skin_cape_status"
         android:layout_width="match_parent"

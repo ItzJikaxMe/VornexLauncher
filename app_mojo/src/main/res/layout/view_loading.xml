@@ -3,10 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="?android:attr/progressBarStyleHorizontal"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    android:indeterminate="true">
-
-</ProgressBar>
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp"
+    android:indeterminate="true"
+    android:indeterminateTint="@color/launcher_green_bright" />

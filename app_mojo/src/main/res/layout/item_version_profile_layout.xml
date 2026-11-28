@@ -3,18 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="?attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_52sdp"
-    android:paddingStart="@dimen/_17sdp"
-    app:drawableStartSize="@dimen/_36sdp"
-    app:drawableStartIntegerScaling="true"
-
+    android:layout_height="60dp"
+    android:layout_marginVertical="3dp"
+    android:background="@drawable/auth_choice_offline"
+    android:paddingStart="14dp"
+    android:paddingEnd="12dp"
     android:gravity="center_vertical"
-    android:drawablePadding="@dimen/_19sdp"
+    android:textColor="@color/launcher_text"
+    android:textSize="13sp"
+    android:drawablePadding="14dp"
+    app:drawableStartSize="34dp"
+    app:drawableStartIntegerScaling="true"
     tools:drawableStart="@drawable/ic_gamepad_pointer"
-    tools:text="FORGE - Forge-1.7.10-1664"
-    tools:ignore="RtlSymmetry">
-
-
-</fr.spse.extended_view.ExtendedTextView>
+    tools:text="FABRIC  •  1.21.1" />

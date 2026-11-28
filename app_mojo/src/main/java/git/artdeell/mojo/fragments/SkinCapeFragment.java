@@ -2,6 +2,7 @@ package git.artdeell.mojo.fragments;
 
 import android.annotation.SuppressLint;
 import android.graphics.BitmapFactory;
+import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -37,6 +38,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -47,6 +50,10 @@ public class SkinCapeFragment extends Fragment {
     private String pendingType = "skin";
     private File savedSkin;
     private File savedCape;
+    private File skinLibrary;
+    private File capeLibrary;
+    private boolean autoRotate = true;
+    private boolean walking = true;
 
     private final ActivityResultLauncher<String> imagePicker =
             registerForActivityResult(new ActivityResultContracts.GetContent(), this::onImagePicked);
@@ -62,10 +69,19 @@ public class SkinCapeFragment extends Fragment {
         status = view.findViewById(R.id.skin_cape_status);
         Button skinButton = view.findViewById(R.id.skin_choose_button);
         Button capeButton = view.findViewById(R.id.cape_choose_button);
+        Button skinLibraryButton = view.findViewById(R.id.skin_library_button);
+        Button capeLibraryButton = view.findViewById(R.id.cape_library_button);
+        Button rotateButton = view.findViewById(R.id.skin_auto_rotate);
+        Button walkButton = view.findViewById(R.id.skin_walk_animation);
+        Button resetButton = view.findViewById(R.id.skin_reset_view);
 
         File appFolder = new File(requireContext().getFilesDir(), "skins");
         savedSkin = new File(appFolder, "skin.png");
         savedCape = new File(appFolder, "cape.png");
+        skinLibrary = new File(appFolder, "library/skins");
+        capeLibrary = new File(appFolder, "library/capes");
+        skinLibrary.mkdirs();
+        capeLibrary.mkdirs();
 
         WebSettings settings = preview.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -89,6 +105,11 @@ public class SkinCapeFragment extends Fragment {
             pendingType = "cape";
             imagePicker.launch("image/png");
         });
+        skinLibraryButton.setOnClickListener(v -> showLibrary("skin"));
+        capeLibraryButton.setOnClickListener(v -> showLibrary("cape"));
+        rotateButton.setOnClickListener(v -> { autoRotate = !autoRotate; rotateButton.setText("Auto rotate: " + (autoRotate ? "ON" : "OFF")); preview.evaluateJavascript("window.setAutoRotate(" + autoRotate + ")", null); });
+        walkButton.setOnClickListener(v -> { walking = !walking; walkButton.setText("Walk: " + (walking ? "ON" : "OFF")); preview.evaluateJavascript("window.setWalking(" + walking + ")", null); });
+        resetButton.setOnClickListener(v -> preview.evaluateJavascript("window.resetView()", null));
 
         status.setText((savedSkin.exists() ? "Skin saved" : "No skin selected")
                 + "  •  " + (savedCape.exists() ? "Cape saved" : "No cape selected"));
@@ -149,6 +170,10 @@ public class SkinCapeFragment extends Fragment {
             File appFolder = new File(requireContext().getFilesDir(), "skins");
             if (!appFolder.exists() && !appFolder.mkdirs())
                 throw new IOException("Cannot create skin storage");
+            File libraryDir = "skin".equals(pendingType) ? skinLibrary : capeLibrary;
+            if (!libraryDir.exists() && !libraryDir.mkdirs()) throw new IOException("Cannot create library");
+            File libraryFile = new File(libraryDir, pendingType + "_" + System.currentTimeMillis() + ".png");
+            try (FileOutputStream file = new FileOutputStream(libraryFile)) { file.write(bytes); }
             File appTarget = new File(appFolder, pendingType + ".png");
             try (FileOutputStream file = new FileOutputStream(appTarget)) { file.write(bytes); }
 
@@ -169,6 +194,33 @@ public class SkinCapeFragment extends Fragment {
             Toast.makeText(requireContext(), "Import failed: " + e.getMessage(),
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void showLibrary(String type) {
+        File directory = "skin".equals(type) ? skinLibrary : capeLibrary;
+        File[] files = directory == null ? null : directory.listFiles((dir, name) -> name.toLowerCase(java.util.Locale.ROOT).endsWith(".png"));
+        if (files == null || files.length == 0) {
+            new AlertDialog.Builder(requireContext()).setTitle("Your " + type + " library").setMessage("No saved " + type + " files yet. Import one with the Choose button.").setPositiveButton("OK", null).show();
+            return;
+        }
+        Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+        String[] labels = new String[files.length];
+        for (int i = 0; i < files.length; i++) labels[i] = files[i].getName().replace(".png", "");
+        new AlertDialog.Builder(requireContext()).setTitle("Saved " + type + "s").setItems(labels, (dialog, which) -> {
+            try {
+                byte[] bytes = readFile(files[which]);
+                File active = "skin".equals(type) ? savedSkin : savedCape;
+                try (FileOutputStream output = new FileOutputStream(active)) { output.write(bytes); }
+                String encoded = Base64.encodeToString(bytes, Base64.NO_WRAP);
+                String function = "skin".equals(type) ? "showSkin" : "showCape";
+                if (preview != null) preview.evaluateJavascript("window." + function + "('" + encoded + "')", null);
+                if ("skin".equals(type)) ExtraCore.setValue(ExtraConstants.REFRESH_ACCOUNT_SPINNER, true);
+                status.setText("Selected saved " + type + ": " + files[which].getName());
+                applyToSelectedGame(bytes, type);
+            } catch (Exception e) {
+                Toast.makeText(requireContext(), "Could not load saved file: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }).setNegativeButton("Close", null).show();
     }
 
     private void applyToSelectedGame(byte[] bytes, String type) {
@@ -268,18 +320,21 @@ public class SkinCapeFragment extends Fragment {
     }
 
     private String viewerHtml() {
-        return "<!doctype html><html><head><meta name='viewport' content='width=device-width, initial-scale=1'>"
-                + "<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#151020}"
-                + "canvas{width:100%;height:100%;display:block}</style>"
+        return "<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'>"
+                + "<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#29213b 0%,#171321 58%,#11101a 100%)}canvas{width:100%;height:100%;display:block;touch-action:none}</style>"
                 + "<script src='bundles/skinview3d.bundle.js'></script></head><body><canvas id='skin'></canvas>"
-                + "<script>let viewer=null,pendingSkin=null,pendingCape=null;"
-                + "function init(){if(!window.skinview3d||viewer)return;"
-                + "const c=document.getElementById('skin');viewer=new skinview3d.SkinViewer({canvas:c,width:360,height:420});"
-                + "viewer.controls.enableRotate=true;viewer.controls.enableZoom=true;"
-                + "viewer.animation=new skinview3d.IdleAnimation();"
-                + "if(pendingSkin)viewer.loadSkin(pendingSkin);if(pendingCape)viewer.loadCape(pendingCape);}"
+                + "<script>let viewer=null,pendingSkin=null,pendingCape=null,rotate=true,walk=true;"
+                + "function init(){if(!window.skinview3d||viewer)return;const c=document.getElementById('skin');"
+                + "viewer=new skinview3d.SkinViewer({canvas:c,width:window.innerWidth,height:window.innerHeight});"
+                + "viewer.controls.enableRotate=true;viewer.controls.enableZoom=true;viewer.controls.enablePan=false;"
+                + "viewer.autoRotate=rotate;viewer.autoRotateSpeed=0.8;viewer.fov=38;viewer.camera.position.set(28,18,42);viewer.camera.lookAt(0,16,0);"
+                + "if(pendingSkin)viewer.loadSkin(pendingSkin);if(pendingCape)viewer.loadCape(pendingCape);setWalking(walk);"
+                + "window.addEventListener('resize',()=>viewer&&viewer.setSize(window.innerWidth,window.innerHeight));}"
                 + "window.showSkin=function(data){pendingSkin='data:image/png;base64,'+data;if(!viewer)init();if(viewer)viewer.loadSkin(pendingSkin);};"
                 + "window.showCape=function(data){pendingCape='data:image/png;base64,'+data;if(!viewer)init();if(viewer)viewer.loadCape(pendingCape);};"
+                + "window.setAutoRotate=function(value){rotate=value;if(viewer)viewer.autoRotate=value;};"
+                + "window.setWalking=function(value){walk=value;if(viewer)viewer.animation=value?new skinview3d.WalkingAnimation():null;};"
+                + "window.resetView=function(){if(!viewer)return;viewer.camera.position.set(28,18,42);viewer.camera.lookAt(0,16,0);viewer.autoRotate=rotate;};"
                 + "window.addEventListener('load',init);</script></body></html>";
     }
 
