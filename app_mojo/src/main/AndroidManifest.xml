@@ -54,7 +54,7 @@
             android:exported="true"
             android:label="Vornex Launcher"
             android:launchMode="singleTop"
-            android:screenOrientation="sensorPortrait">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
